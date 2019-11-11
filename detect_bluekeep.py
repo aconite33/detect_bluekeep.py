@@ -1038,7 +1038,7 @@ def main():
     # with progressbar.ProgressBar(max_value=len(ips)) as bar:
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as executor:
         for ip in ips:
-            ft_dp = executor.submit(check_host, ip, 3389, args.notls)
+            ft_dp = executor.submit(check_host, ip.strip(), 3389, args.notls)
             th.append(ft_dp)
         for r in concurrent.futures.as_completed(th):
             ip, status = r.result()

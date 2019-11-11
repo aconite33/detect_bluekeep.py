@@ -1014,18 +1014,24 @@ def main():
     parser.add_argument('-l', '--logfile', nargs="?", help='log to file')
     parser.add_argument('-w', '--workers', type=int, default=300, help='number of parallel worker tasks')
     parser.add_argument('host', nargs="*", help='List of targets (addresses or subnets)')
+    parser.add_argument('--hostFile', help='File of targets IPs to scan')
     args = parser.parse_args()
 
-    if not args.host:
+    if not args.host and not args.hostFile:
         parser.print_help()
         return
 
     configure_logging(args.debug, args.logfile)
 
     ips = []
-    for ip in args.host:
-        cmd = True
-        ips += [addr.exploded for addr in IPv4Network(ip, strict=False)]
+    if args.hostFile:
+        fopen = open(args.hostFile)
+        ips = list(fopen)
+        fopen.close()
+    else:
+	    for ip in args.host:
+	        cmd = True
+	        ips += [addr.exploded for addr in IPv4Network(ip, strict=False)]
     th = []
     ips = set(ips)
     log.info(f"Going to scan {len(ips)} hosts, in {args.workers} parallel tasks")

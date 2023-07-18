@@ -21,6 +21,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa,padding
 from cryptography.hazmat.primitives import hashes
 
+logging.basicConfig(stream=sys.stdout)
 log = logging.getLogger("bluekeep")
 
 VERSION = "0.13"
